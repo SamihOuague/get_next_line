@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 01:39:13 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/14 04:02:26 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/14 05:46:15 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ char	*get_next_line(int fd)
 	int	i;
 	int	j;
 	int	n_line;
-	
+	char	*str;
+
 	l = NULL;
 	i = 0;
 	while (buf[i] != '\0')
@@ -73,6 +74,7 @@ char	*get_next_line(int fd)
 	while (read(fd, (buf + i), BUFFER_SIZE - i))
 	{
 		tmp = malloc(sizeof(t_list));
+		(*tmp).next = NULL;
 		ft_memset((*tmp).content, 0, BUFFER_SIZE);
 		n_line = find_newline(buf);
 		if (n_line < 0)
@@ -83,8 +85,16 @@ char	*get_next_line(int fd)
 				ft_memset((*tmp).content + j, buf[j], 1);
 				j++;
 			}
-			(*tmp).next = l;
-			l = tmp;
+			ft_memset(buf, 0, BUFFER_SIZE);
+			cursor = l;
+			if (cursor != NULL)
+			{
+				while ((*cursor).next != NULL)
+					cursor = (*cursor).next;
+				(*cursor).next = tmp;
+			}
+			else
+				l = tmp;
 			if (find_newline(buf) == -1)
 			{
 				ft_memset(buf, 0, BUFFER_SIZE);
@@ -94,25 +104,73 @@ char	*get_next_line(int fd)
 		else
 		{
 			j = 0;
-			while (j <= n_line)
+			while (j < BUFFER_SIZE)
 			{
-				ft_memset((*tmp).content + j, buf[j], 1);
-				if (j < n_line)
-					ft_memset((buf + j), buf[j + n_line + 1], 1);
+				if (j <= n_line)
+				{
+					ft_memset((*tmp).content + j, buf[j], 1);
+					ft_memset((buf + j), 0, 1);
+				}
+				else
+					ft_memset((buf + (j - n_line - 1)), (char) buf[j], 1);
 				j++;
 			}
-			(*tmp).next = l;
-                        l = tmp;
+			cursor = l;
+                        if (cursor != NULL)
+                        {
+                                while ((*cursor).next != NULL)
+                                        cursor = (*cursor).next;
+                                (*cursor).next = tmp;
+                        }
+                        else
+                                l = tmp;
 			break ;
 		}
+
 	}
-	return (NULL);
+	if (l == NULL)
+		return (NULL);
+	cursor = l;
+	i = 0;
+	while (cursor != NULL)
+	{
+		j = 0;
+		while (j < BUFFER_SIZE && (*cursor).content[j] != '\0')
+			j++;
+		i += j;
+		cursor = (*cursor).next;
+	}
+	str = malloc(sizeof(char) * i + 1);
+	cursor = l;
+	i = 0;
+	while (cursor != NULL)
+        {
+                j = 0;
+                while (j < BUFFER_SIZE && (*cursor).content[j] != '\0')
+		{
+			*(str + (j + i)) = (*cursor).content[j];
+			j++;
+		}
+                i += j;
+                cursor = (*cursor).next;
+        }
+	*(str + i) = '\0';
+	return (str);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	get_next_line(0);
-	get_next_line(0);
-	get_next_line(0);
+	char		*str;
+	int	fd;
+
+	if (argc != 2)
+		return (1);
+	fd = open(argv[1], O_RDONLY);
+	str = get_next_line(fd);
+	while (str != NULL)
+	{
+		printf("%s", str);
+		str = get_next_line(fd);
+	}	
 	return (0);
 }

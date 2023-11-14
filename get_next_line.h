@@ -6,12 +6,14 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 01:38:05 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/14 01:57:48 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/14 04:40:02 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <fcntl.h>
+
 
 char	*get_next_line(int fd);
