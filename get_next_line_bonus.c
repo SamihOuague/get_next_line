@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 01:39:13 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/15 07:50:30 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/15 08:14:15 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,25 @@ char	*ft_get_str(t_list *l)
 	int		size;
 
 	size = ft_get_str_size(l);
-	if (size == 0)
-		return (NULL);
 	str = malloc(sizeof(char) * size + 1);
 	cursor = l;
 	i = 0;
-	while (cursor != NULL)
+	while (str != NULL && size != 0 && cursor != NULL)
 	{
-		j = 0;
-		while (j < BUFFER_SIZE && (*cursor).content[j] != '\0')
-		{
+		j = -1;
+		while ((++j) < BUFFER_SIZE && (*cursor).content[j] != '\0')
 			*(str + (j + i)) = (*cursor).content[j];
-			j++;
-		}
 		i += j;
 		cursor = (*cursor).next;
 	}
-	*(str + i) = '\0';
+	if (size > 0)
+		*(str + i) = '\0';
+	else if (str != NULL && size == 0)
+	{
+		free(str);
+		str = NULL;
+	}
+	ft_lstclear(&l);
 	return (str);
 }
 
@@ -78,12 +80,15 @@ int	ft_strlen(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char	buf[BUFFER_SIZE] = {0};
+	static char	*buf_array[255][BUFFER_SIZE] = {0};
 	t_list		*l;
-	char		*str;
+	char		*buf;
 	int			i;
 	int			n_line;
 
+	if (fd > 254 || fd < 0)
+		return (NULL);
+	buf = (char *) buf_array[fd];
 	l = NULL;
 	i = ft_strlen(buf);
 	while (read(fd, (buf + i), BUFFER_SIZE - i) || i > 0)
@@ -94,7 +99,5 @@ char	*get_next_line(int fd)
 		if (n_line == -1 || n_line >= 0)
 			break ;
 	}
-	str = ft_get_str(l);
-	ft_lstclear(&l);
-	return (str);
+	return (ft_get_str(l));
 }

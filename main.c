@@ -6,12 +6,15 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 01:01:55 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/15 05:23:57 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/15 08:05:05 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 42
+#elif BUFFER_SIZE >= 65535
+# undef BUFFER_SIZE
+# define BUFFER_SIZE 65535
 #endif
 #include "get_next_line.h"
 
@@ -28,7 +31,7 @@ int	main(int argc, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
-		printf("(%s) File not found.\n", argv[1]);
+		printf("File not found.\n");
 		return (2);
 	}
 	str = get_next_line(fd);
