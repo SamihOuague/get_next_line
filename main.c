@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 01:01:55 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/15 01:12:08 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/15 05:23:57 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	main(int argc, char **argv)
 {
 	char	*str;
 	int		fd;
-	int		i;
 
 	if (argc != 2)
 	{
@@ -33,7 +32,6 @@ int	main(int argc, char **argv)
 		return (2);
 	}
 	str = get_next_line(fd);
-	i = 1;
 	while (str != NULL)
 	{
 		printf("%s", str);

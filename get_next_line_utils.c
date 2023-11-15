@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 22:42:43 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/15 00:57:12 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/15 05:24:51 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,25 @@ t_list	*ft_lstnew(char *buf, int n_line)
 	int		j;
 
 	tmp = malloc(sizeof(t_list));
+	if (tmp == NULL)
+		return (NULL);
 	(*tmp).next = NULL;
 	ft_memset((*tmp).content, 0, BUFFER_SIZE);
-	j = 0;
+	j = -1;
 	if (n_line >= 0)
 	{
-		while (j < BUFFER_SIZE)
+		while ((j++) < BUFFER_SIZE)
 		{
 			if (j <= n_line)
 				ft_memset(((*tmp).content + j), buf[j], 1);
 			else
 				ft_memset((buf + (j - n_line - 1)), (char) buf[j], 1);
 			ft_memset((buf + j), 0, 1);
-			j++;
 		}
 		return (tmp);
 	}
-	while (j < BUFFER_SIZE)
-		ft_memset((*tmp).content + (j++), buf[j], 1);
+	while ((++j) < BUFFER_SIZE)
+		ft_memset((*tmp).content + j, buf[j], 1);
 	ft_memset(buf, 0, BUFFER_SIZE);
 	return (tmp);
 }

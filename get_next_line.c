@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 01:39:13 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/15 01:01:48 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/15 05:08:18 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 int	ft_get_str_size(t_list *l)
 {
 	t_list	*cursor;
-	int		i;
 	int		j;
+	int		i;
 
 	cursor = l;
 	i = 0;
@@ -38,8 +38,8 @@ char	*ft_get_str(t_list *l)
 {
 	t_list	*cursor;
 	char	*str;
-	int		i;
 	int		j;
+	int		i;
 	int		size;
 
 	size = ft_get_str_size(l);
