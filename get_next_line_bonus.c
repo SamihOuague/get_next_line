@@ -6,16 +6,10 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 01:39:13 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/15 08:14:15 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:02:26 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#elif BUFFER_SIZE >= 65535
-# undef BUFFER_SIZE
-# define BUFFER_SIZE 65535
-#endif
 #include "get_next_line.h"
 
 int	ft_get_str_size(t_list *l)
@@ -46,10 +40,14 @@ char	*ft_get_str(t_list *l)
 	int		size;
 
 	size = ft_get_str_size(l);
+	if (size == 0)
+		return (NULL);
 	str = malloc(sizeof(char) * size + 1);
+	if (str == NULL)
+		return (NULL);
 	cursor = l;
 	i = 0;
-	while (str != NULL && size != 0 && cursor != NULL)
+	while (cursor != NULL)
 	{
 		j = -1;
 		while ((++j) < BUFFER_SIZE && (*cursor).content[j] != '\0')
@@ -57,13 +55,7 @@ char	*ft_get_str(t_list *l)
 		i += j;
 		cursor = (*cursor).next;
 	}
-	if (size > 0)
-		*(str + i) = '\0';
-	else if (str != NULL && size == 0)
-	{
-		free(str);
-		str = NULL;
-	}
+	*(str + i) = '\0';
 	ft_lstclear(&l);
 	return (str);
 }
@@ -97,7 +89,11 @@ char	*get_next_line(int fd)
 		ft_lstadd_back(&l, ft_lstnew(buf, n_line));
 		i = 0;
 		if (n_line == -1 || n_line >= 0)
+		{
+			if (n_line == -1)
+				return (ft_get_str(l));
 			break ;
+		}
 	}
 	return (ft_get_str(l));
 }

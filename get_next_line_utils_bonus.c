@@ -6,16 +6,10 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 22:42:43 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/15 07:49:33 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:10:09 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#elif BUFFER_SIZE >= 65535
-# undef BUFFER_SIZE
-# define BUFFER_SIZE 65535
-#endif
 #include "get_next_line.h"
 
 void	ft_lstclear(t_list **lst)
@@ -52,6 +46,8 @@ t_list	*ft_lstnew(char *buf, int n_line)
 	t_list	*tmp;
 	int		j;
 
+	if (*(buf) == '\0')
+		return (NULL);
 	tmp = malloc(sizeof(t_list));
 	if (tmp == NULL)
 		return (NULL);
@@ -70,7 +66,7 @@ t_list	*ft_lstnew(char *buf, int n_line)
 		}
 		return (tmp);
 	}
-	while ((++j) < BUFFER_SIZE)
+	while ((++j) < BUFFER_SIZE && buf[j] != '\0')
 		ft_memset((*tmp).content + j, buf[j], 1);
 	ft_memset(buf, 0, BUFFER_SIZE);
 	return (tmp);

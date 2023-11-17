@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 01:38:05 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/17 16:01:42 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:55:06 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 typedef struct s_list
 {
-	char			content[BUFFER_SIZE];
+	char			*content;
 	struct s_list	*next;
 }	t_list;
 

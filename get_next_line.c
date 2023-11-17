@@ -6,16 +6,10 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 01:39:13 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/15 07:50:30 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:34:52 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#elif BUFFER_SIZE >= 65535
-# undef BUFFER_SIZE
-# define BUFFER_SIZE 65535
-#endif
 #include "get_next_line.h"
 
 int	ft_get_str_size(t_list *l)
