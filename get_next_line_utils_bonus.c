@@ -6,11 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 22:42:43 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/17 16:10:09 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/19 06:56:01 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	ft_lstclear(t_list **lst)
 {
@@ -21,6 +21,7 @@ void	ft_lstclear(t_list **lst)
 	while (cursor != NULL)
 	{
 		tmp = (*cursor).next;
+		free((*cursor).content);
 		free(cursor);
 		cursor = tmp;
 	}
@@ -41,34 +42,15 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	(*cursor).next = new;
 }
 
-t_list	*ft_lstnew(char *buf, int n_line)
+t_list	*ft_lstnew(char *content)
 {
 	t_list	*tmp;
-	int		j;
 
-	if (*(buf) == '\0')
-		return (NULL);
 	tmp = malloc(sizeof(t_list));
 	if (tmp == NULL)
 		return (NULL);
+	(*tmp).content = content;
 	(*tmp).next = NULL;
-	ft_memset((*tmp).content, 0, BUFFER_SIZE);
-	j = -1;
-	if (n_line >= 0)
-	{
-		while ((++j) < BUFFER_SIZE)
-		{
-			if (j <= n_line)
-				ft_memset(((*tmp).content + j), buf[j], 1);
-			else
-				ft_memset((buf + (j - n_line - 1)), (char) buf[j], 1);
-			ft_memset((buf + j), 0, 1);
-		}
-		return (tmp);
-	}
-	while ((++j) < BUFFER_SIZE && buf[j] != '\0')
-		ft_memset((*tmp).content + j, buf[j], 1);
-	ft_memset(buf, 0, BUFFER_SIZE);
 	return (tmp);
 }
 
@@ -84,12 +66,12 @@ void	ft_memset(void *buf, int c, size_t siz)
 	}
 }
 
-int	find_newline(char *buf)
+int	find_newline(char *buf, size_t size)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (i < BUFFER_SIZE)
+	while (i < size)
 	{
 		if (buf[i] == '\n')
 			return (i);
