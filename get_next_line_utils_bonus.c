@@ -6,13 +6,13 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 22:42:43 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/19 06:56:01 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/19 13:00:38 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-void	ft_lstclear(t_list **lst)
+void	*ft_lstclear(t_list **lst)
 {
 	t_list	*tmp;
 	t_list	*cursor;
@@ -25,6 +25,7 @@ void	ft_lstclear(t_list **lst)
 		free(cursor);
 		cursor = tmp;
 	}
+	return (NULL);
 }
 
 void	ft_lstadd_back(t_list **lst, t_list *new)

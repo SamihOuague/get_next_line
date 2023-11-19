@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 01:39:13 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/19 07:32:01 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/19 12:57:58 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,13 @@ int	ft_set_list(t_list **lst, char *buf)
 	int		len;
 	int		n_line;
 
-	str = NULL;
 	len = ft_get_str_size(NULL, buf);
 	n_line = find_newline(buf, BUFFER_SIZE);
+	str = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (str == NULL)
+		return (0);
 	if (n_line >= 0)
 	{
-		str = malloc(sizeof(char) * n_line + 2);
 		ft_memcpy(str, buf, n_line + 1);
 		*(str + n_line + 1) = '\0';
 		ft_memcpy(buf, (buf + n_line + 1), BUFFER_SIZE - n_line);
@@ -101,7 +102,6 @@ int	ft_set_list(t_list **lst, char *buf)
 	}
 	else
 	{
-		str = malloc(sizeof(char) * BUFFER_SIZE + 1);
 		ft_memcpy(str, buf, BUFFER_SIZE + 1);
 		if (n_line == -1)
 			ft_memset(buf, 0, BUFFER_SIZE);
@@ -116,25 +116,25 @@ char	*get_next_line(int fd)
 	t_list		*l;
 	int			n_line;
 	int			len;
+	int			n_read;
 
 	if (fd < 0 || fd >= 64)
 		return (NULL);
 	l = NULL;
 	len = ft_get_str_size(NULL, buf[fd]);
-	n_line = find_newline(buf[fd], BUFFER_SIZE);
-	if (len > 0)
+	if (len > 0 && ft_set_list(&l, buf[fd]) != 0)
+		return (ft_get_str(&l));
+	n_read = read(fd, buf[fd], BUFFER_SIZE);
+	while (n_read != 0)
 	{
-		len = ft_set_list(&l, buf[fd]);
-		if (len != 0)
-			return (ft_get_str(&l));
-	}
-	while (read(fd, buf[fd], BUFFER_SIZE) > 0)
-	{
+		if (n_read < 0)
+			return (ft_lstclear(&l));
 		n_line = find_newline(buf[fd], BUFFER_SIZE);
 		ft_set_list(&l, buf[fd]);
 		if (n_line >= 0 || n_line == -1)
 			break ;
 		ft_memset(buf[fd], 0, BUFFER_SIZE);
+		n_read = read(fd, buf[fd], BUFFER_SIZE);
 	}
 	return (ft_get_str(&l));
 }

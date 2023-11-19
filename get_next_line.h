@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 01:38:05 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/11/19 05:54:57 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/11/19 12:39:35 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_list
 t_list	*ft_lstnew(char *buf);
 void	ft_lstadd_back(t_list **list, t_list *new);
 void	ft_memset(void *buf, int c, size_t siz);
-void	ft_lstclear(t_list **lst);
+void	*ft_lstclear(t_list **lst);
 char	*get_next_line(int fd);
 char	*ft_get_str(t_list **l);
 int		find_newline(char *buf, size_t size);
